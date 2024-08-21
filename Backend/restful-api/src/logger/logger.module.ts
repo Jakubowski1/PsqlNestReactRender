@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common';
-import { LoggerService } from './logger.service';
+import { UserController } from '../user/user.controller';
+import { UserService } from '../user/user.service';
+import { WinstonLoggerService } from './logger.service';
+import { WinstonModule } from 'nest-winston';
+
 
 @Module({
-  providers: [LoggerService]
+  controllers: [UserController],
+  providers: [UserService, WinstonLoggerService],
+  exports: [WinstonModule],
+  
 })
-export class LoggerModule {}
+export class UsersModule {}
