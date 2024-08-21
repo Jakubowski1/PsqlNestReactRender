@@ -1,8 +1,8 @@
 import {PrimaryGeneratedColumn, Column} from "typeorm"
 import {ApiProperty} from "@nestjs/swagger"
-import { User } from "src/user/user.entity"
+import { User } from "../user/user.entity"
 import { Entity } from 'typeorm';
-import { Role } from 'src/constants/roles.enum';
+import { Role } from '../constants/roles.enum';
 
 @Entity()
 export class Manager extends User {

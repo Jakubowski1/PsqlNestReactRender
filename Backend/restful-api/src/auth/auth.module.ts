@@ -9,7 +9,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { RolesGuard } from '../guards/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { WinstonLoggerService } from 'src/logger/logger.service';
+import { WinstonLoggerService } from '../logger/logger.service';
 
 @Module({
   imports: [

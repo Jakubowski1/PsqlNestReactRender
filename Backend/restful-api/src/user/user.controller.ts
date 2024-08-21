@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { User as UserEntity } from './user.entity';
 
 import {ApiTags,ApiOperation,ApiParam,ApiBody,ApiBearerAuth,} from '@nestjs/swagger';
-
+import { Role } from '../constants/roles.enum';
   import { RolesGuard } from '../guards/roles.guard';
   import { Roles } from '../decorators/role.decorator';
   import { CreateUserDto } from './dto/create-user.dto';
@@ -21,7 +21,7 @@ import {ApiTags,ApiOperation,ApiParam,ApiBody,ApiBearerAuth,} from '@nestjs/swag
     ) {}
   
     @Get()
-    @Roles('admin')
+    @Roles(Role.Manager)
     @ApiOperation({ summary: 'Get all users' })
     async findAll(): Promise<UserEntity[]> {
       this.logger.log('Getting all users');
@@ -29,7 +29,7 @@ import {ApiTags,ApiOperation,ApiParam,ApiBody,ApiBearerAuth,} from '@nestjs/swag
     }
   
     @Get(':id')
-    @Roles('admin')
+    @Roles(Role.Manager)
     @ApiOperation({ summary: 'Get a user by ID' })
     @ApiParam({ name: 'id', type: 'number' })
     async findOne(@Param('id') id: number): Promise<UserEntity> {
@@ -43,7 +43,7 @@ import {ApiTags,ApiOperation,ApiParam,ApiBody,ApiBearerAuth,} from '@nestjs/swag
     }
   
     @Post()
-    @Roles('admin')
+    @Roles(Role.Manager)
     @ApiOperation({ summary: 'Create a new user' })
     @ApiBody({ type: CreateUserDto })
     async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -58,7 +58,7 @@ import {ApiTags,ApiOperation,ApiParam,ApiBody,ApiBearerAuth,} from '@nestjs/swag
     }
   
     @Put(':id')
-    @Roles('admin')
+    @Roles(Role.Manager)
     @ApiOperation({ summary: 'Update a user' })
     @ApiParam({ name: 'id', type: 'number' })
     @ApiBody({ type: UpdateUserDto })
@@ -81,7 +81,7 @@ import {ApiTags,ApiOperation,ApiParam,ApiBody,ApiBearerAuth,} from '@nestjs/swag
     }
   
     @Delete(':id')
-    @Roles('admin')
+    @Roles(Role.Manager)
     @ApiOperation({ summary: 'Delete a user' })
     @ApiParam({ name: 'id', type: 'number' })
     async delete(@Param('id') id: number): Promise<void> {

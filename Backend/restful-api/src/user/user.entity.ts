@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, TableInheritance } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/constants/roles.enum';
+import { Role } from '../constants/roles.enum';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'role' } })

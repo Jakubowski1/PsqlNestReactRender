@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from 'typeorm';
 import { User } from '../user/user.entity';
-import { Specialty } from '../specialty/specialty.entity';
+import { Specialty } from '../constants/specialties.enum';
 import { Schedule } from '../schedule/schedule.entity';
 
 @Entity()

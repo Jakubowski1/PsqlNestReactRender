@@ -15,10 +15,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as cookieParser from 'cookie-parser';
 import JwtCookieMiddleware from './auth/jwt-cookie.middleware';
 
-
-
-
-
 @Module({
   imports: [
     // Load environment variables globally
