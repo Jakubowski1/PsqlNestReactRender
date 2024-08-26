@@ -4,12 +4,11 @@ import { ManagerService } from './manager.service';
 import { ManagerController } from './manager.controller';
 import { Manager } from './manager.entity';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../user/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Manager, User])],
-  providers: [ManagerService, JwtService],
+  imports: [TypeOrmModule.forFeature([Manager])], // Register Manager entity
+  providers: [ManagerService,JwtService],
   controllers: [ManagerController],
-  exports: [ManagerService],
+  exports : [ManagerService]
 })
 export class ManagerModule {}

@@ -33,7 +33,7 @@ import { UserService } from './user/user.service';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'), // Use DATABASE_URL from environment variables
+        url: process.env.DATABASE_URL, // Use DATABASE_URL from environment variables
         entities: [__dirname + '/**/*.entity{.ts,.js}'], // Adjust entity path according to your structure
         migrations: [__dirname + '/migrations/**/*.ts'], // Adjust migrations path if necessary
         synchronize: true, // Recommended to disable in production
@@ -44,12 +44,11 @@ import { UserService } from './user/user.service';
       inject: [ConfigService],
     }),
 
-    // Other feature modules
-   AuthModule,  ManagerModule, UserModule,  ScheduleModule, AppointmentModule, MedicalHistoryModule, DoctorModule, PatientModule
+   ManagerModule
 
   ],
   controllers: [AppController],
-  providers: [AppService, ManagerService, PatientService,DoctorService,AppointmentService,ScheduleService,UserService],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

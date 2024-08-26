@@ -1,9 +1,10 @@
-import {ChildEntity, Column} from "typeorm"
+import {PrimaryGeneratedColumn, Column} from "typeorm"
 import {ApiProperty} from "@nestjs/swagger"
 import { User } from "../user/user.entity"
+import { Entity } from 'typeorm';
 import { Role } from '../constants/roles.enum';
 
-@ChildEntity('manager')
+@Entity()
 export class Manager extends User {
 
     @Column({ type: 'enum', enum: Role, default: Role.Manager })

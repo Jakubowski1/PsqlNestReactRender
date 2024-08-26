@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../constants/roles.enum';
 
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+@TableInheritance({ column: { type: 'varchar', name: 'role' } })
 export class User {
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Unique identifier for the user' })
@@ -29,6 +29,4 @@ export class User {
   @ApiProperty({ description: 'Role of the user', enum: Role })
   role: Role;
 
-  @Column()
-  type: string;
 }

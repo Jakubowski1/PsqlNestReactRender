@@ -11,42 +11,44 @@ import { Manager } from './manager.entity';
 
 @Controller('managers')
 export class ManagerController {
-  // constructor(
-  //   private readonly managerService: ManagerService,
-  // ) {}
+  constructor(
+    private readonly managerService: ManagerService,
+  ) {}
 
-  // @Post()
-  // @Roles(Role.Manager)
-  // @UseGuards(RolesGuard)
-  // @ApiOperation({ summary: 'Create a new manager' })
-  // @ApiBody({ type: CreateManagerDto })
-  // async create(@Body() createManagerDto: CreateManagerDto): Promise<Manager> {
-  //   return await this.managerService.create(createManagerDto);
-  // }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get()
-  // async findAll() {
-  //   return await this.managerService.findAll();
-  // }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get(':id')
-  // async findOne(@Param('id') id: number) {
-  //   return await this.managerService.findOne(id);
-  // }
+  @Post()
+  @Roles(Role.Manager)
+  @UseGuards(RolesGuard)
+  @ApiOperation({ summary: 'Create a new manager' })
+  @ApiBody({ type: CreateManagerDto })
+  async create(@Body() createManagerDto: CreateManagerDto): Promise<Manager> {
+    return await this.managerService.create(createManagerDto);
+  }
 
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.Manager)
-  // @Put(':id')
-  // async update(@Param('id') id: number, @Body() updateManagerDto: UpdateManagerDto) {
-  //   return await this.managerService.update(id, updateManagerDto);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async findAll() {
+    return await this.managerService.findAll();
+  }
 
-  // @UseGuards(JwtAuthGuard, RolesGuard)
-  // @Roles(Role.Manager)
-  // @Delete(':id')
-  // async remove(@Param('id') id: number) {
-  //   return await this.managerService.remove(id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return await this.managerService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Manager)
+  @Put(':id')
+  async update(@Param('id') id: number, @Body() updateManagerDto: UpdateManagerDto) {
+    return await this.managerService.update(id, updateManagerDto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Manager)
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    return await this.managerService.remove(id);
+  }
 }
