@@ -6,6 +6,9 @@ import { User } from '../user/user.entity';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { LoginDto } from './dto/login.dto';
 import { InvalidCredentialsException, RegistrationFailedException, InternalServerErrorException } from '../exceptions/custom-exceptions';  
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { RegisterDto } from './dto/register.dto';
+import { Patient } from 'src/patient/patient.entity';
 
 
 @ApiTags('Auth')
@@ -34,14 +37,9 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
-  @ApiBody({ type: User })
-  async register(@Body() user: User) {
-    
-    const newUser = await this.authService.register(user);
-    if (!newUser) {
-      throw new RegistrationFailedException();
-    }
-    return newUser;
+  @ApiBody({ type: CreateUserDto })
+  async register(@Body() registerPatientDto: RegisterDto): Promise<Patient> {
+    return this.authService.register(registerPatientDto);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -47,7 +47,6 @@ import { Role } from '../constants/roles.enum';
       newUser.surname = createUserDto.surname;
       newUser.email = createUserDto.email;
       newUser.password = createUserDto.password;
-      newUser.role = createUserDto.role;
       return await this.usersService.create(newUser);
     }
   
@@ -68,7 +67,6 @@ import { Role } from '../constants/roles.enum';
       if (updateUserDto.surname) existingUser.surname = updateUserDto.surname;
       if (updateUserDto.email) existingUser.email = updateUserDto.email;
       if (updateUserDto.password) existingUser.password = updateUserDto.password;
-      if (updateUserDto.role) existingUser.role = updateUserDto.role;
       return await this.usersService.update(id, existingUser);
     }
   

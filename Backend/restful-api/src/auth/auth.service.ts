@@ -3,11 +3,15 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../user/user.entity';
-
+import { RegisterDto } from './dto/register.dto';
+import { PatientService } from 'src/patient/patient.service';
+import { Patient } from 'src/patient/patient.entity';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UserService,
+    private readonly patientService: PatientService,
+
     private readonly jwtService: JwtService,
   ) {}
 
@@ -44,8 +48,15 @@ export class AuthService {
     };
   }
 
-  async register(user: User): Promise<User> {
-    const newUser = await this.usersService.create({ ...user, password: user.password });
-    return newUser;
+  async register(registerDto: RegisterDto): Promise<Patient> {
+    // Hash the password before saving
+
+    // Create a new patient with the hashed password and inactive status
+    const newPatient = await this.patientService.create({
+      ...registerDto      
+    });
+
+    return newPatient;
   }
 }
+

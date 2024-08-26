@@ -44,7 +44,7 @@ import { UserService } from './user/user.service';
       inject: [ConfigService],
     }),
 
-   ManagerModule
+   ManagerModule, AuthModule, UserModule
 
   ],
   controllers: [AppController],

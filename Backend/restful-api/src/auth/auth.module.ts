@@ -9,10 +9,15 @@ import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { RolesGuard } from '../guards/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
-
+import { PatientService } from 'src/patient/patient.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Patient } from 'src/patient/patient.entity';
+import { User } from 'src/user/user.entity';
+import { UserService } from 'src/user/user.service';
 @Module({
   imports: [
-    forwardRef(() => UserModule),
+    TypeOrmModule.forFeature([Patient,User]),
+
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -25,7 +30,7 @@ import { APP_GUARD } from '@nestjs/core';
     ConfigModule, 
   ],
   providers: [
-    AuthService,
+    AuthService,PatientService,UserService,
     LocalStrategy,
     JwtStrategy,
     JwtService,
