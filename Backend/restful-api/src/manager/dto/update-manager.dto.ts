@@ -1,6 +1,6 @@
 import { IsString, IsEmail, IsOptional, MinLength } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Role } from 'src/constants/roles.enum';
+import { Role } from '../../constants/roles.enum';
 
 export class UpdateManagerDto {
   @IsOptional()

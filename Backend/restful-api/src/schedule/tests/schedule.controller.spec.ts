@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ScheduleController } from './schedule.controller';
+import { ScheduleController } from '../schedule.controller';
 
 describe('ScheduleController', () => {
   let controller: ScheduleController;

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';  // Import Swagger decorator
+import { ApiProperty } from '@nestjs/swagger'; 
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
 import { Doctor } from '../doctor/doctor.entity';
 import { Patient } from '../patient/patient.entity';

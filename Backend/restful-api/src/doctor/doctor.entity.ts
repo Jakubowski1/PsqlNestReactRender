@@ -11,17 +11,17 @@ export class Doctor extends User {
     @ApiProperty({ description: 'Unique identifier for the doctor' })
     id: number;
 
-    @ApiProperty({ example: 'John', description: 'The name of the doctor' })
-    @Column()
-    name: string;
+    // @ApiProperty({ example: 'John', description: 'The name of the doctor' })
+    // @Column()
+    // name: string;
 
-    @ApiProperty({ example: 'Doe', description: 'The surname of the doctor' })
-    @Column()
-    surname: string;
+    // @ApiProperty({ example: 'Doe', description: 'The surname of the doctor' })
+    // @Column()
+    // surname: string;
 
-    @ApiProperty({ example: 'john.doe@example.com', description: 'The email of the doctor' })
-    @Column({ unique: true })
-    email: string;
+    // @ApiProperty({ example: 'john.doe@example.com', description: 'The email of the doctor' })
+    // @Column({ unique: true })
+    // email: string;
 
      @Column({ type: 'enum', enum: Specialty })
     @ApiProperty({ description: 'Specialty of the doctor', enum: Specialty })

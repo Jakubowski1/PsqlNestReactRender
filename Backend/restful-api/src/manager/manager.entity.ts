@@ -6,7 +6,7 @@ import { Role } from '../constants/roles.enum';
 
 @Entity()
 export class Manager extends User {
-    @PrimaryGeneratedColumn()
+
     
     @ApiProperty({ description: 'Role of the manager', enum: Role })
     role: Role = Role.Manager;

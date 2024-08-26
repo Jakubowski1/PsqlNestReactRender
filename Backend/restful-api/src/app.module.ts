@@ -14,6 +14,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as cookieParser from 'cookie-parser';
 import JwtCookieMiddleware from './auth/jwt-cookie.middleware';
+import { ManagerService } from './manager/manager.service';
+import { PatientService } from './patient/patient.service';
+import { DoctorService } from './doctor/doctor.service';
+import { AppointmentService } from './appointment/appointment.service';
+import { ScheduleService } from './schedule/schedule.service';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -21,7 +27,7 @@ import JwtCookieMiddleware from './auth/jwt-cookie.middleware';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
+    ManagerModule,
     // Configure TypeORM to use DATABASE_URL from environment variables
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -39,11 +45,11 @@ import JwtCookieMiddleware from './auth/jwt-cookie.middleware';
     }),
 
     // Other feature modules
-   AuthModule, UserModule,  ScheduleModule, AppointmentModule, MedicalHistoryModule, DoctorModule, ManagerModule, PatientModule,
+   AuthModule, UserModule,  ScheduleModule, AppointmentModule, MedicalHistoryModule, DoctorModule, PatientModule
 
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ManagerService, PatientService,DoctorService,AppointmentService,ScheduleService,UserService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
