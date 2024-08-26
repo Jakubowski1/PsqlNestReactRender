@@ -27,7 +27,7 @@ import { UserService } from './user/user.service';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ManagerModule,
+  
     // Configure TypeORM to use DATABASE_URL from environment variables
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -45,7 +45,7 @@ import { UserService } from './user/user.service';
     }),
 
     // Other feature modules
-   AuthModule, UserModule,  ScheduleModule, AppointmentModule, MedicalHistoryModule, DoctorModule, PatientModule
+   AuthModule,  ManagerModule, UserModule,  ScheduleModule, AppointmentModule, MedicalHistoryModule, DoctorModule, PatientModule
 
   ],
   controllers: [AppController],

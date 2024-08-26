@@ -7,51 +7,46 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/role.decorator';
 import { Role } from 'src/constants/roles.enum';
-import { WinstonLoggerService } from 'src/logger/logger.service';
 import { Manager } from './manager.entity';
 
 @Controller('managers')
 export class ManagerController {
-  constructor(
-    private readonly managerService: ManagerService,
-    private readonly logger: WinstonLoggerService,
-  ) {}
+  // constructor(
+  //   private readonly managerService: ManagerService,
+  // ) {}
 
+  // @Post()
+  // @Roles(Role.Manager)
+  // @UseGuards(RolesGuard)
+  // @ApiOperation({ summary: 'Create a new manager' })
+  // @ApiBody({ type: CreateManagerDto })
+  // async create(@Body() createManagerDto: CreateManagerDto): Promise<Manager> {
+  //   return await this.managerService.create(createManagerDto);
+  // }
 
+  // @UseGuards(JwtAuthGuard)
+  // @Get()
+  // async findAll() {
+  //   return await this.managerService.findAll();
+  // }
 
-  @Post()
-  @Roles(Role.Manager)
-  @UseGuards(RolesGuard)
-  @ApiOperation({ summary: 'Create a new manager' })
-  @ApiBody({ type: CreateManagerDto })
-  async create(@Body() createManagerDto: CreateManagerDto): Promise<Manager> {
-    this.logger.log(`Creating a new manager: ${createManagerDto.name}`);
-    return await this.managerService.create(createManagerDto);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get(':id')
+  // async findOne(@Param('id') id: number) {
+  //   return await this.managerService.findOne(id);
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async findAll() {
-    return await this.managerService.findAll();
-  }
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.Manager)
+  // @Put(':id')
+  // async update(@Param('id') id: number, @Body() updateManagerDto: UpdateManagerDto) {
+  //   return await this.managerService.update(id, updateManagerDto);
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.managerService.findOne(id);
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Manager)
-  @Put(':id')
-  async update(@Param('id') id: number, @Body() updateManagerDto: UpdateManagerDto) {
-    return await this.managerService.update(id, updateManagerDto);
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Manager)
-  @Delete(':id')
-  async remove(@Param('id') id: number) {
-    return await this.managerService.remove(id);
-  }
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.Manager)
+  // @Delete(':id')
+  // async remove(@Param('id') id: number) {
+  //   return await this.managerService.remove(id);
+  // }
 }
