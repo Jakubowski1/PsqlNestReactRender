@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'; 
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
-import { Doctor } from '../doctor/doctor.entity';
-import { Patient } from '../patient/patient.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Appointment {
@@ -9,13 +8,13 @@ export class Appointment {
   @ApiProperty({ description: 'Unique identifier of the appointment' })  // Swagger description
   id: number;
 
-  @ManyToOne(() => Doctor)
-  @ApiProperty({ type: () => Doctor, description: 'The doctor assigned to the appointment' })  // Swagger description
-  doctor: Doctor;
+  @ManyToOne(() => User)
+  @ApiProperty({ type: () => User, description: 'The doctor assigned to the appointment' })  // Swagger description
+  doctor: User;
 
-  @ManyToOne(() => Patient, (patient) => patient.appointments)
-  @ApiProperty({ type: () => Patient, description: 'The patient attending the appointment' })  // Swagger description
-  patient: Patient;
+  @ManyToOne(() => User, (user) => user.appointments)
+  @ApiProperty({ type: () => User, description: 'The user attending the appointment' })  // Swagger description
+  user: User;
 
   @Column({ type: 'timestamp' })
   @ApiProperty({ description: 'The scheduled time for the appointment' })  // Swagger description

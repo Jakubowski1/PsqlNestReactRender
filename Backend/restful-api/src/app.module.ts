@@ -6,20 +6,20 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { AppointmentController } from './appointment/appointment.controller';
 import { AppointmentModule } from './appointment/appointment.module';
 import { MedicalHistoryModule } from './medical-history/medical-history.module';
-import { DoctorModule } from './doctor/doctor.module';
-import { ManagerModule } from './manager/manager.module';
-import { PatientModule } from './patient/patient.module';
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as cookieParser from 'cookie-parser';
 import JwtCookieMiddleware from './auth/jwt-cookie.middleware';
-import { ManagerService } from './manager/manager.service';
-import { PatientService } from './patient/patient.service';
-import { DoctorService } from './doctor/doctor.service';
 import { AppointmentService } from './appointment/appointment.service';
 import { ScheduleService } from './schedule/schedule.service';
 import { UserService } from './user/user.service';
+import { Schedule } from './schedule/schedule.entity';
+import { User } from './user/user.entity';
+import { Appointment } from './appointment/appointment.entity';
+import { MedicalHistory } from './medical-history/medical-history.entity';
+import { Visit } from './visit/visit.entity';
+import { VisitModule } from './visit/visit.module';
 
 @Module({
   imports: [
@@ -34,7 +34,7 @@ import { UserService } from './user/user.service';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         url: process.env.DATABASE_URL, // Use DATABASE_URL from environment variables
-        entities: [__dirname + '/**/*.entity{.ts,.js}'], // Adjust entity path according to your structure
+        entities: [Schedule, User,Appointment,MedicalHistory,Visit], // Adjust entity path according to your structure
         migrations: [__dirname + '/migrations/**/*.ts'], // Adjust migrations path if necessary
         synchronize: true, // Recommended to disable in production
         ssl: {
@@ -44,7 +44,7 @@ import { UserService } from './user/user.service';
       inject: [ConfigService],
     }),
 
-   ManagerModule, AuthModule, UserModule
+    AuthModule, UserModule, VisitModule, AppointmentModule,ScheduleModule,MedicalHistoryModule
 
   ],
   controllers: [AppController],

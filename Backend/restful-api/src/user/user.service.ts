@@ -12,48 +12,44 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    const users = await this.usersRepository.find();
-    return users;
+    return await this.usersRepository.find({ relations: ['appointments', 'medicalHistory', 'schedule'] });
   }
 
   async findOne(id: number): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { id }});
-    if (user) {
-    } else {
-    }
-    return user;
+    return await this.usersRepository.findOne({ 
+      where: { id },
+      relations: ['appointments', 'medicalHistory', 'schedule']
+    });
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
-    const user = await this.usersRepository.findOne({ where: { email } });
-    if (user) {
-    } else {
-    }
-    return user;
+    return await this.usersRepository.findOne({ 
+      where: { email }
+    });
   }
 
   async create(user: User): Promise<User> {
+    
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     const newUser = this.usersRepository.create(user);
+    console.log(newUser);
     const savedUser = await this.usersRepository.save(newUser);
     return savedUser;
   }
 
-  async update(id: number, user: User): Promise<User> {
+  async update(id: number, user: Partial<User>): Promise<User> {
+    // Check if the password is being updated and hash it if so
     if (user.password) {
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(user.password, salt);
     }
+    
     await this.usersRepository.update(id, user);
-    const updatedUser = await this.usersRepository.findOne({ where: { id }});
-    if (updatedUser) {
-    } else {
-    }
-    return updatedUser;
+    return await this.findOne(id);  // Return the updated user
   }
 
   async delete(id: number): Promise<void> {
-    const result = await this.usersRepository.delete(id);
+    await this.usersRepository.delete(id);
   }
 }

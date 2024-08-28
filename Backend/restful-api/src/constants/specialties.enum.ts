@@ -1,4 +1,5 @@
 export enum Specialty {
+  None = 'None',
     AllergyAndImmunology = 'Allergy and Immunology',
     Anesthesiology = 'Anesthesiology',
     Cardiology = 'Cardiology',

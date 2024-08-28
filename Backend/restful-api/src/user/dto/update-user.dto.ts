@@ -1,26 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../../constants/roles.enum';
-
+import { Specialty } from '../../constants/specialties.enum';
 
 export class UpdateUserDto {
+  @ApiProperty({ required: false })
+  name?: string;
 
-@ApiProperty({ example: 'john', required: false  })
-name?: string;
+  @ApiProperty({ required: false })
+  surname?: string;
 
-@ApiProperty({ example: 'doe', required: false  })
-surname?: string;
+  @ApiProperty({ required: false })
+  password?: string;
 
-@ApiProperty({ example: 'john_doe@gmail.com', required: false  })
-email?: string;
+  @ApiProperty({ enum: Role, required: false })
+  role?: Role;
 
-@ApiProperty({ example: 'strong_password', required: false  })
-password?: string;
+  // Patient-specific fields
+  @ApiProperty({ required: false })
+  isActive?: boolean;
 
-@ApiProperty({ 
-  example: Role.Patient, 
-  enum: Role, 
-  default: Role.Patient, 
-  required: false 
-})
-role?: Role = Role.Patient;
+  // Doctor-specific fields
+  @ApiProperty({ required: false })
+  specialty?: Specialty;
 }
