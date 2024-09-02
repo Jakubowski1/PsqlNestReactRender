@@ -15,11 +15,9 @@ import Typography from "@mui/joy/Typography";
 import Stack from "@mui/joy/Stack";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import BadgeRoundedIcon from "@mui/icons-material/BadgeRounded";
+import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import logo from "../assets/SoftTeco.png";
 import logoDark from "../assets/SoftTeco_dark.png";
-import miniature from "../assets/Miniature.png";
-import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 
 function ColorSchemeToggle(props) {
   const { onClick, ...other } = props;
@@ -48,6 +46,45 @@ function ColorSchemeToggle(props) {
 const customTheme = extendTheme({ defaultColorScheme: "dark" });
 
 export default function SignIn() {
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formElements = event.currentTarget.elements;
+    const data = {
+      email: formElements.email.value,
+      password: formElements.password.value,
+      persistent: formElements.persistent.checked,
+    };
+
+    try {
+      const response = await fetch(
+        "https://nestapi-3.onrender.com/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "*/*",
+          },
+          body: JSON.stringify({ email: data.email, password: data.password }),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        setErrorMessage("Login successful!");
+        // Handle success (e.g., store token, redirect user)
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(
+          `Login failed: ${errorData.message || "Invalid credentials"}`
+        );
+      }
+    } catch (error) {
+      setErrorMessage(`Error: ${error.message}`);
+    }
+  };
+
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
@@ -141,18 +178,7 @@ export default function SignIn() {
               or
             </Divider>
             <Stack sx={{ gap: 4, mt: 2 }}>
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  const formElements = event.currentTarget.elements;
-                  const data = {
-                    email: formElements.email.value,
-                    password: formElements.password.value,
-                    persistent: formElements.persistent.checked,
-                  };
-                  alert(JSON.stringify(data, null, 2));
-                }}
-              >
+              <form onSubmit={handleSubmit}>
                 <FormControl required>
                   <FormLabel>Email</FormLabel>
                   <Input type="email" name="email" />
@@ -174,6 +200,11 @@ export default function SignIn() {
                       Forgot your password?
                     </Link>
                   </Box>
+                  {errorMessage && (
+                    <Typography level="body-sm" color="error">
+                      {errorMessage}
+                    </Typography>
+                  )}
                   <Button type="submit" fullWidth>
                     Sign in
                   </Button>
