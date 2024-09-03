@@ -35,12 +35,20 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
 
   const handleLogout = () => {
+    const csrfToken = getCookie("XSRF-TOKEN"); // Assuming it's stored in a cookie
     fetch("https://nestapi-3.onrender.com/auth/logout", {
       method: "POST",
+      credentials: "include",
       headers: {
-        Accept: "*/*",
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken, // Add the CSRF token here
       },
     })
       .then((response) => {
