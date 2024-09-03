@@ -19,6 +19,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [logoutMessage, setLogoutMessage] = useState("");
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,30 +36,42 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  function getCookie(name) {
+
+  const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
-  }
+    return null;
+  };
 
-  const handleLogout = () => {
-    const csrfToken = getCookie("XSRF-TOKEN"); // Assuming it's stored in a cookie
-    fetch("https://nestapi-3.onrender.com/auth/logout", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken, // Add the CSRF token here
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP status ${response.status}`);
+  const handleLogout = async () => {
+    const csrfToken = getCookie("XSRF-TOKEN");
+
+    try {
+      const response = await fetch(
+        "https://nestapi-3.onrender.com/auth/logout",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+          },
         }
-        return response.json();
-      })
-      .then((data) => console.log("Logout successful:", data))
-      .catch((error) => console.error("Error during logout:", error));
+      );
+
+      if (!response.ok) {
+        throw new Error(`Logout failed with status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Logout successful:", data);
+      setLogoutMessage("Logout successful!");
+      // Optionally, redirect the user or perform other actions
+    } catch (error) {
+      console.error("Error during logout:", error);
+      setLogoutMessage(`Error during logout: ${error.message}`);
+    }
   };
 
   const handleMenuItemClick = (setting) => {
@@ -77,7 +90,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="#"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -129,7 +142,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="#"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -189,6 +202,11 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
         </Toolbar>
+        {logoutMessage && (
+          <Typography variant="body2" color="error" sx={{ mt: 2 }}>
+            {logoutMessage}
+          </Typography>
+        )}
       </Container>
     </AppBar>
   );

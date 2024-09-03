@@ -9,13 +9,13 @@ import Checkbox from "@mui/joy/Checkbox";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
-import IconButton from "@mui/joy/IconButton";
 import Link from "@mui/joy/Link";
 import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
 import Stack from "@mui/joy/Stack";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+import IconButton from "@mui/joy/IconButton";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import logo from "../assets/SoftTeco.png";
 import logoDark from "../assets/SoftTeco_dark.png";
@@ -52,6 +52,7 @@ export default function SignIn() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrorMessage("");
     const formElements = event.currentTarget.elements;
     const data = {
       email: formElements.email.value,
@@ -68,18 +69,15 @@ export default function SignIn() {
             "Content-Type": "application/json",
             accept: "*/*",
           },
-          body: JSON.stringify({ email: data.email, password: data.password }),
+          body: JSON.stringify(data),
+          credentials: "include",
         }
       );
 
       if (response.ok) {
         const responseData = await response.json();
         setErrorMessage("Login successful!");
-        if (responseData.role === "patient") {
-          navigate("/manager");
-        } else {
-          navigate("/manager");
-        }
+        navigate("/manager");
       } else {
         const errorData = await response.json();
         setErrorMessage(
@@ -98,7 +96,7 @@ export default function SignIn() {
         styles={{
           ":root": {
             "--Form-maxWidth": "800px",
-            "--Transition-duration": "0.4s", // set to `none` to disable transition
+            "--Transition-duration": "0.4s",
           },
         }}
       />
