@@ -1,5 +1,11 @@
-import React from "react";
+import AppBar from "@mui/material/AppBar";
+import React, { Fragment } from "react";
 
 export default function HomePatient() {
-  return <div>HomePatient</div>;
+  return (
+    <Fragment>
+      <AppBar />
+      <div>HomePatient</div>;
+    </Fragment>
+  );
 }

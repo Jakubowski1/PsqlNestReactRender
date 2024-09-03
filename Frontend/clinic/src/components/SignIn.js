@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CssVarsProvider, extendTheme, useColorScheme } from "@mui/joy/styles";
 import GlobalStyles from "@mui/joy/GlobalStyles";
 import CssBaseline from "@mui/joy/CssBaseline";
@@ -22,9 +23,9 @@ import logoDark from "../assets/SoftTeco_dark.png";
 function ColorSchemeToggle(props) {
   const { onClick, ...other } = props;
   const { mode, setMode } = useColorScheme();
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => setMounted(true), []);
+  useEffect(() => setMounted(true), []);
 
   return (
     <IconButton
@@ -46,7 +47,8 @@ function ColorSchemeToggle(props) {
 const customTheme = extendTheme({ defaultColorScheme: "dark" });
 
 export default function SignIn() {
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,7 +75,11 @@ export default function SignIn() {
       if (response.ok) {
         const responseData = await response.json();
         setErrorMessage("Login successful!");
-        // Handle success (e.g., store token, redirect user)
+        if (responseData.role === "patient") {
+          navigate("/manager");
+        } else {
+          navigate("/manager");
+        }
       } else {
         const errorData = await response.json();
         setErrorMessage(
@@ -181,7 +187,7 @@ export default function SignIn() {
               <form onSubmit={handleSubmit}>
                 <FormControl required>
                   <FormLabel>Email</FormLabel>
-                  <Input type="email" name="email" />
+                  <Input name="email" />
                 </FormControl>
                 <FormControl required>
                   <FormLabel>Password</FormLabel>

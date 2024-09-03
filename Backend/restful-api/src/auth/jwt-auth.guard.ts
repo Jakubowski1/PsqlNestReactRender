@@ -11,22 +11,20 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const authHeader = request.headers.authorization;
 
-    if (!authHeader) {
-      throw new UnauthorizedException('Authorization header is missing');
-    }
-
-    const token = authHeader.split(' ')[1];
+    // Check for the JWT token in the cookies
+    const token = request.cookies?.jwt;
 
     if (!token) {
-      throw new UnauthorizedException('Bearer token is missing');
+      throw new UnauthorizedException('JWT token is missing from cookies');
     }
 
     const secret = this.configService.get<string>('JWT_SECRET');
     try {
+      // Verify the token using the JWT secret
       const payload = this.jwtService.verify(token, { secret });
-      request.user = payload; 
+      // Attach the payload to the request object
+      request.user = payload;
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
