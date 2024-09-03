@@ -175,7 +175,7 @@ export default function SignIn() {
                 </Typography>
                 <Typography level="body-sm">
                   New patient?{" "}
-                  <Link href="/signin" level="title-sm">
+                  <Link href="/signup" level="title-sm">
                     Sign up!
                   </Link>
                 </Typography>

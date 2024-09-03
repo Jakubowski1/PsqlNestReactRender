@@ -5,7 +5,6 @@ import GlobalStyles from "@mui/joy/GlobalStyles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
-import Checkbox from "@mui/joy/Checkbox";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
@@ -62,7 +61,6 @@ export default function SignUp() {
     const password = formElements.password.value;
     const password2 = formElements.password2.value;
 
-    // Check if passwords match
     if (password !== password2) {
       setErrorMessage("Passwords do not match.");
       return;
