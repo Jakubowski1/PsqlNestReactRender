@@ -46,25 +46,38 @@ function ColorSchemeToggle(props) {
 
 const customTheme = extendTheme({ defaultColorScheme: "dark" });
 
-export default function SignIn() {
+export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
   const handleNavigation = () => {
     navigate("/");
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage("");
     const formElements = event.currentTarget.elements;
+
+    const password = formElements.password.value;
+    const password2 = formElements.password2.value;
+
+    // Check if passwords match
+    if (password !== password2) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
     const data = {
       email: formElements.email.value,
-      password: formElements.password.value,
-      persistent: formElements.persistent.checked,
+      password: password,
+      name: formElements.name.value,
+      surname: formElements.surname.value,
     };
 
     try {
       const response = await fetch(
-        "https://nestapi-3.onrender.com/auth/login",
+        "https://nestapi-3.onrender.com/auth/register",
         {
           method: "POST",
           headers: {
@@ -77,15 +90,12 @@ export default function SignIn() {
       );
 
       if (response.ok) {
-        const responseData = await response.json();
-        localStorage.setItem("role", responseData.role);
-
-        setErrorMessage("Login successful!");
-        navigate("/manager");
+        setErrorMessage("Register successful!");
+        navigate("/signin");
       } else {
         const errorData = await response.json();
         setErrorMessage(
-          `Login failed: ${errorData.message || "Invalid credentials"}`
+          `Registration failed: ${errorData.message || "An error occurred."}`
         );
       }
     } catch (error) {
@@ -171,12 +181,12 @@ export default function SignIn() {
             <Stack sx={{ gap: 4, mb: 2 }}>
               <Stack sx={{ gap: 1 }}>
                 <Typography component="h1" level="h3">
-                  Sign in
+                  Sign up
                 </Typography>
                 <Typography level="body-sm">
-                  New patient?{" "}
+                  Already have an account?{" "}
                   <Link href="/signin" level="title-sm">
-                    Sign up!
+                    Sign in!
                   </Link>
                 </Typography>
               </Stack>
@@ -197,8 +207,20 @@ export default function SignIn() {
                   <Input name="email" />
                 </FormControl>
                 <FormControl required>
+                  <FormLabel>Name</FormLabel>
+                  <Input type="text" name="name" />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Surname</FormLabel>
+                  <Input type="text" name="surname" />
+                </FormControl>
+                <FormControl required>
                   <FormLabel>Password</FormLabel>
                   <Input type="password" name="password" />
+                </FormControl>
+                <FormControl required>
+                  <FormLabel>Repeat password</FormLabel>
+                  <Input type="password" name="password2" />
                 </FormControl>
                 <Stack sx={{ gap: 4, mt: 2 }}>
                   <Box
@@ -207,19 +229,14 @@ export default function SignIn() {
                       justifyContent: "space-between",
                       alignItems: "center",
                     }}
-                  >
-                    <Checkbox size="sm" label="Remember me" name="persistent" />
-                    <Link level="title-sm" href="#replace-with-a-link">
-                      Forgot your password?
-                    </Link>
-                  </Box>
+                  ></Box>
                   {errorMessage && (
                     <Typography level="body-sm" color="error">
                       {errorMessage}
                     </Typography>
                   )}
                   <Button type="submit" fullWidth>
-                    Sign in
+                    Sign up
                   </Button>
                 </Stack>
               </form>

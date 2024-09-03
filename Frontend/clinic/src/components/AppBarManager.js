@@ -12,11 +12,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
+import { useNavigate } from "react-router-dom";
 
 const pages = ["Users", "Appointments", "Medical histories", "Visits"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [logoutMessage, setLogoutMessage] = useState("");
@@ -65,7 +67,7 @@ function ResponsiveAppBar() {
       }
 
       const data = await response.json();
-      console.log("Logout successful:", data);
+      navigate("/");
       setLogoutMessage("Logout successful!");
       // Optionally, redirect the user or perform other actions
     } catch (error) {
