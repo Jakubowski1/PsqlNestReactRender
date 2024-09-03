@@ -55,6 +55,7 @@ export class AuthController {
       res.clearCookie('jwt', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        sameSite: "None",
       });
       return res.send({ message: 'Logged out successfully' });
     } catch (error) {
