@@ -17,16 +17,13 @@ import Sheet from "@mui/joy/Sheet";
 import Checkbox from "@mui/joy/Checkbox";
 import IconButton, { iconButtonClasses } from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
-import Menu from "@mui/joy/Menu";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
+import RowMenu from "../services/RowMenu";
+import api from "../api"; // Import the axios instance
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -44,26 +41,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function RowMenu() {
-  return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
-      >
-        <MoreHorizRoundedIcon />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
-        <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
-      </Menu>
-    </Dropdown>
-  );
-}
-
 export default function TableManager() {
   const [rows, setRows] = useState([]);
   const [order, setOrder] = useState("desc");
@@ -71,10 +48,10 @@ export default function TableManager() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetch("https://nestapi-3.onrender.com/users")
-      .then((response) => response.json())
-      .then((data) => {
-        const formattedRows = data.map((user) => ({
+    api
+      .get("/users")
+      .then((response) => {
+        const formattedRows = response.data.map((user) => ({
           id: user.id,
           name: `${user.name} ${user.surname}`,
           email: user.email,
@@ -112,10 +89,14 @@ export default function TableManager() {
   );
 
   return (
-    <Fragment>
+    <div style={{ width: "90%", margin: "auto" }}>
       <Sheet
         className="SearchAndFilters-mobile"
-        sx={{ display: { xs: "flex", sm: "none" }, my: 1, gap: 1 }}
+        sx={{
+          display: { xs: "flex", sm: "none" },
+          my: 1,
+          gap: 1,
+        }}
       >
         <Input
           size="sm"
@@ -172,12 +153,14 @@ export default function TableManager() {
       </Box>
       <Sheet
         className="OrderTableContainer"
-        variant="outlined"
+        variant="soft"
         sx={{
-          display: { xs: "none", sm: "initial" },
+          display: { sm: "block" },
           width: "100%",
-          borderRadius: "sm",
           flexShrink: 1,
+          borderColor: "blue",
+          borderRadius: 20,
+          bgcolor: "background.paper",
           overflow: "auto",
           minHeight: 0,
         }}
@@ -296,7 +279,7 @@ export default function TableManager() {
                     <Link level="body-xs" component="button">
                       View
                     </Link>
-                    <RowMenu />
+                    <RowMenu id={row.id} />
                   </Box>
                 </td>
               </tr>
@@ -346,6 +329,6 @@ export default function TableManager() {
           Next
         </Button>
       </Box>
-    </Fragment>
+    </div>
   );
 }

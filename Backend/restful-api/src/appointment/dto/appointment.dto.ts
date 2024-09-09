@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsInt, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsInt, IsDateString,IsOptional } from 'class-validator';
 
 export class CreateAppointmentDto {
   @IsInt()
@@ -16,4 +16,11 @@ export class CreateAppointmentDto {
   @IsNotEmpty()
   @ApiProperty({ description: 'The scheduled time for the appointment' })
   appointmentTime: string;
+}
+
+export class UpdateAppointmentDto {
+  @ApiProperty({ example: '2024-09-12T16:00:00.000Z', description: 'New time of the appointment (optional)', required: false })
+  @IsOptional()
+  @IsDateString()
+  appointmentTime?: string;
 }

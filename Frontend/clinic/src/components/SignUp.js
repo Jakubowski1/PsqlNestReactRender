@@ -18,6 +18,7 @@ import IconButton from "@mui/joy/IconButton";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import logo from "../assets/SoftTeco.png";
 import logoDark from "../assets/SoftTeco_dark.png";
+import api from "../api"; // Import axios instance
 
 function ColorSchemeToggle(props) {
   const { onClick, ...other } = props;
@@ -74,30 +75,15 @@ export default function SignUp() {
     };
 
     try {
-      const response = await fetch(
-        "https://nestapi-3.onrender.com/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "*/*",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        setErrorMessage("Register successful!");
-        navigate("/signin");
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(
-          `Registration failed: ${errorData.message || "An error occurred."}`
-        );
-      }
+      const response = await api.post("/auth/register", data);
+      setErrorMessage("Register successful!");
+      navigate("/signin");
     } catch (error) {
-      setErrorMessage(`Error: ${error.message}`);
+      setErrorMessage(
+        `Registration failed: ${
+          error.response?.data?.message || "An error occurred."
+        }`
+      );
     }
   };
 

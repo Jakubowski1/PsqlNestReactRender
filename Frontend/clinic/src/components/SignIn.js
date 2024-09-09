@@ -19,6 +19,7 @@ import IconButton from "@mui/joy/IconButton";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import logo from "../assets/SoftTeco.png";
 import logoDark from "../assets/SoftTeco_dark.png";
+import api from "../api"; // Import the axios instance
 
 function ColorSchemeToggle(props) {
   const { onClick, ...other } = props;
@@ -52,6 +53,7 @@ export default function SignIn() {
   const handleNavigation = () => {
     navigate("/");
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage("");
@@ -63,33 +65,24 @@ export default function SignIn() {
     };
 
     try {
-      const response = await fetch(
-        "https://nestapi-3.onrender.com/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "*/*",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
+      const response = await api.post("/auth/login", data);
 
-      if (response.ok) {
-        const responseData = await response.json();
-        localStorage.setItem("role", responseData.role);
-
+      const responseData = response.data;
+      localStorage.setItem("role", responseData.role);
+      if (responseData.role === "manager") {
         setErrorMessage("Login successful!");
         navigate("/manager");
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(
-          `Login failed: ${errorData.message || "Invalid credentials"}`
-        );
+      } else if (responseData.role === "doctor") {
+        setErrorMessage("Login successful!");
+        navigate("/doctor");
+      } else if (responseData.role === "patient") {
+        setErrorMessage("Login successful!");
+        navigate("/patient");
       }
     } catch (error) {
-      setErrorMessage(`Error: ${error.message}`);
+      setErrorMessage(
+        `Error: ${error.response?.data?.message || "Invalid credentials"}`
+      );
     }
   };
 
