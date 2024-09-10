@@ -14,29 +14,42 @@ import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import { useParams } from "react-router-dom";
-import api from "../api";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import api from "../api"; // Import axios instance
 
 export default function MyProfile() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
   const [profile, setProfile] = React.useState({
     name: "",
     surname: "",
-    role: "",
     email: "",
-    specialty: "",
+    password: "",
+    isActive: false,
+    specialty: "", // Specialty is only for doctors
   });
 
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
+  // Fetch user data and pick only necessary fields
   React.useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await api.get(`/users/${id}`);
-        setProfile(response.data);
+        const userData = response.data;
+
+        // Extract only necessary fields
+        const profileData = {
+          name: userData.name,
+          surname: userData.surname,
+          email: userData.email,
+          password: userData.password,
+          isActive: userData.isActive,
+          specialty: userData.role === "doctor" ? userData.specialty : "", // Only include specialty for doctors
+        };
+
+        setProfile(profileData); // Assign extracted data to profile state
         setLoading(false);
       } catch (error) {
         setError("Error fetching profile data");
@@ -47,6 +60,26 @@ export default function MyProfile() {
     fetchProfile();
   }, [id]);
 
+  // Handle form submission (save changes)
+  const handleSave = async () => {
+    try {
+      const response = await api.put(`/users/${id}`, profile); // API call to update user
+      alert("Profile updated successfully");
+      navigate(-1); // Navigate back after saving
+    } catch (error) {
+      setError("Error updating profile");
+    }
+  };
+
+  // Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      [name]: value,
+    }));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -54,7 +87,6 @@ export default function MyProfile() {
   if (error) {
     return <div>{error}</div>;
   }
-
   return (
     <Box sx={{ flex: 1, width: "100%" }}>
       <Stack
@@ -108,56 +140,65 @@ export default function MyProfile() {
               </IconButton>
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              {/* Name */}
               <Stack spacing={1}>
                 <FormLabel>Name</FormLabel>
                 <Stack direction="row" spacing={2}>
                   <FormControl sx={{ flexGrow: 1 }}>
                     <Input
                       size="sm"
+                      name="name"
                       value={profile.name}
+                      onChange={handleChange}
                       placeholder="First name"
-                      readOnly
                     />
                   </FormControl>
                   <FormControl sx={{ flexGrow: 1 }}>
                     <Input
                       size="sm"
+                      name="surname"
                       value={profile.surname}
+                      onChange={handleChange}
                       placeholder="Last name"
-                      readOnly
                     />
                   </FormControl>
                 </Stack>
               </Stack>
 
-              {/* Role */}
               <Stack direction="row" spacing={2}>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Role</FormLabel>
-                  <Input size="sm" value={profile.role} readOnly />
+                  <Input
+                    size="sm"
+                    name="role"
+                    value={profile.role}
+                    onChange={handleChange}
+                    readOnly
+                  />
                 </FormControl>
 
-                {/* Email */}
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>
                   <Input
                     size="sm"
                     type="email"
+                    name="email"
                     startDecorator={<EmailRoundedIcon />}
                     value={profile.email}
-                    readOnly
-                    sx={{ flexGrow: 1 }}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </Stack>
 
-              {/* Specialty (if doctor) */}
               {profile.role === "doctor" && (
                 <Stack direction="row" spacing={2}>
                   <FormControl sx={{ flexGrow: 1 }}>
                     <FormLabel>Specialty</FormLabel>
-                    <Input size="sm" value={profile.specialty} readOnly />
+                    <Input
+                      size="sm"
+                      name="specialty"
+                      value={profile.specialty}
+                      onChange={handleChange}
+                    />
                   </FormControl>
                 </Stack>
               )}
@@ -170,11 +211,11 @@ export default function MyProfile() {
                 size="sm"
                 variant="outlined"
                 color="neutral"
-                onClick={navigate("/manager")}
+                onClick={() => navigate(-1)}
               >
                 Cancel
               </Button>
-              <Button size="sm" variant="solid">
+              <Button size="sm" variant="solid" onClick={handleSave}>
                 Save
               </Button>
             </CardActions>
