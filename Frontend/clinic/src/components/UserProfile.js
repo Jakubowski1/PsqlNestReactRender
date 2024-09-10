@@ -16,7 +16,47 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import api from "../api"; // Import axios instance
-
+import { Checkbox } from "@mui/joy";
+import Sheet from "@mui/joy/Sheet";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+const specialties = [
+  { value: "None", label: "None" },
+  { value: "AllergyAndImmunology", label: "Allergy and Immunology" },
+  { value: "Anesthesiology", label: "Anesthesiology" },
+  { value: "Cardiology", label: "Cardiology" },
+  { value: "Dermatology", label: "Dermatology" },
+  { value: "EmergencyMedicine", label: "Emergency Medicine" },
+  { value: "Endocrinology", label: "Endocrinology" },
+  { value: "FamilyMedicine", label: "Family Medicine" },
+  { value: "Gastroenterology", label: "Gastroenterology" },
+  { value: "GeneralSurgery", label: "General Surgery" },
+  { value: "Geriatrics", label: "Geriatrics" },
+  { value: "Hematology", label: "Hematology" },
+  { value: "InfectiousDisease", label: "Infectious Disease" },
+  { value: "InternalMedicine", label: "Internal Medicine" },
+  { value: "Nephrology", label: "Nephrology" },
+  { value: "Neurology", label: "Neurology" },
+  { value: "Neurosurgery", label: "Neurosurgery" },
+  { value: "ObstetricsAndGynecology", label: "Obstetrics and Gynecology" },
+  { value: "Oncology", label: "Oncology" },
+  { value: "Ophthalmology", label: "Ophthalmology" },
+  { value: "Orthopedics", label: "Orthopedics" },
+  { value: "Otolaryngology", label: "Otolaryngology" },
+  { value: "Pathology", label: "Pathology" },
+  { value: "Pediatrics", label: "Pediatrics" },
+  {
+    value: "PhysicalMedicineAndRehabilitation",
+    label: "Physical Medicine and Rehabilitation",
+  },
+  { value: "PlasticSurgery", label: "Plastic Surgery" },
+  { value: "Psychiatry", label: "Psychiatry" },
+  { value: "Pulmonology", label: "Pulmonology" },
+  { value: "Radiology", label: "Radiology" },
+  { value: "Rheumatology", label: "Rheumatology" },
+  { value: "Urology", label: "Urology" },
+  { value: "VascularSurgery", label: "Vascular Surgery" },
+];
 export default function MyProfile() {
   const { id } = useParams();
   const navigate = useNavigate(); // Initialize useNavigate for navigation
@@ -25,7 +65,8 @@ export default function MyProfile() {
     surname: "",
     email: "",
     password: "",
-    isActive: false,
+    role: "",
+    isActive: "",
     specialty: "", // Specialty is only for doctors
   });
 
@@ -45,6 +86,7 @@ export default function MyProfile() {
           surname: userData.surname,
           email: userData.email,
           password: userData.password,
+          role: userData.role,
           isActive: userData.isActive,
           specialty: userData.role === "doctor" ? userData.specialty : "", // Only include specialty for doctors
         };
@@ -69,6 +111,12 @@ export default function MyProfile() {
     } catch (error) {
       setError("Error updating profile");
     }
+  };
+  const handleSpecialityChange = (event, newValue) => {
+    setProfile((prevProfile) => ({
+      ...prevProfile,
+      specialty: newValue, // Update specialty with the selected value
+    }));
   };
 
   // Handle input change
@@ -116,28 +164,11 @@ export default function MyProfile() {
                 sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+                  src="https://xsgames.co/randomusers/avatar.php?g=male"
                   loading="lazy"
                   alt="User avatar"
                 />
               </AspectRatio>
-              <IconButton
-                aria-label="upload new picture"
-                size="sm"
-                variant="outlined"
-                color="neutral"
-                sx={{
-                  bgcolor: "background.body",
-                  position: "absolute",
-                  zIndex: 2,
-                  borderRadius: "50%",
-                  left: 100,
-                  top: 170,
-                  boxShadow: "sm",
-                }}
-              >
-                <EditRoundedIcon />
-              </IconButton>
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
@@ -166,14 +197,39 @@ export default function MyProfile() {
 
               <Stack direction="row" spacing={2}>
                 <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Role</FormLabel>
-                  <Input
-                    size="sm"
-                    name="role"
-                    value={profile.role}
-                    onChange={handleChange}
-                    readOnly
-                  />
+                  <FormLabel>Activation</FormLabel>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <Sheet
+                      color={profile.isActive ? "success" : "danger"}
+                      variant="soft"
+                      sx={{ p: 0.5, pl: 2, pr: 10, borderRadius: 10 }}
+                    >
+                      <Checkbox
+                        size="sm"
+                        name="isActive"
+                        color={profile.isActive ? "success" : "danger"}
+                        overlay
+                        label={
+                          !profile.isActive ? (
+                            <Typography sx={{ color: "red" }}>
+                              Disabled
+                            </Typography>
+                          ) : (
+                            <Typography sx={{ color: "green" }}>
+                              Activated
+                            </Typography>
+                          )
+                        }
+                        checked={profile.isActive}
+                        onChange={(e) =>
+                          setProfile((prevProfile) => ({
+                            ...prevProfile,
+                            isActive: e.target.checked,
+                          }))
+                        }
+                      />
+                    </Sheet>
+                  </Stack>
                 </FormControl>
 
                 <FormControl sx={{ flexGrow: 1 }}>
@@ -193,12 +249,17 @@ export default function MyProfile() {
                 <Stack direction="row" spacing={2}>
                   <FormControl sx={{ flexGrow: 1 }}>
                     <FormLabel>Specialty</FormLabel>
-                    <Input
-                      size="sm"
-                      name="specialty"
+                    <Select
                       value={profile.specialty}
-                      onChange={handleChange}
-                    />
+                      onChange={handleSpecialityChange}
+                      placeholder="Select Specialty"
+                    >
+                      {specialties.map((specialty) => (
+                        <Option key={specialty.value} value={specialty.value}>
+                          {specialty.label}
+                        </Option>
+                      ))}
+                    </Select>
                   </FormControl>
                 </Stack>
               )}
