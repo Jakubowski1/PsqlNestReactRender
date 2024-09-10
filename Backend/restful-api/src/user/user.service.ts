@@ -16,11 +16,15 @@ export class UserService {
   }
 
   async findOne(id: number): Promise<User> {
-    return await this.usersRepository.findOne({ 
-      where: { id },
-      relations: ['appointments', 'medicalHistory', 'schedule']
-    });
+    return await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.appointments', 'appointments') // Join appointments relation
+      .leftJoinAndSelect('user.medicalHistory', 'medicalHistory') // Join medicalHistory relation
+      .leftJoinAndSelect('user.schedule', 'schedule') // Join schedule relation
+      .where('user.id = :id', { id }) // Filter by user id
+      .getOne(); // Get the user along with related entities
   }
+  
 
   async findOneByEmail(email: string): Promise<User | undefined> {
     return await this.usersRepository.findOne({ 
@@ -39,14 +43,13 @@ export class UserService {
   }
 
   async update(id: number, user: Partial<User>): Promise<User> {
-    // Check if the password is being updated and hash it if so
     if (user.password) {
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(user.password, salt);
     }
     
     await this.usersRepository.update(id, user);
-    return await this.findOne(id);  // Return the updated user
+    return await this.findOne(id);  
   }
 
   async delete(id: number): Promise<void> {

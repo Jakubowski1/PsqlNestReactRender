@@ -5,11 +5,19 @@ import { UserController } from './user.controller';
 import { User } from './user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
+import { AppointmentModule } from 'src/appointment/appointment.module';
+import { MedicalHistoryModule } from 'src/medical-history/medical-history.module';
+import { ScheduleModule } from 'src/schedule/schedule.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => AuthModule),  
+    forwardRef(() => AppointmentModule),     // Resolve circular dependency with MedicalHistoryModule
+               
+    forwardRef(() => MedicalHistoryModule),     
+    forwardRef(() => ScheduleModule),     // Resolve circular dependency with MedicalHistoryModule
+    
   ],
   providers: [UserService, JwtService],
   controllers: [UserController],

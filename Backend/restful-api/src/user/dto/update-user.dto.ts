@@ -12,6 +12,9 @@ export class UpdateUserDto {
   @ApiProperty({ required: false })
   password?: string;
 
+  @ApiProperty({ required: false })
+  email?: string;
+
   @ApiProperty({ enum: Role, required: false })
   role?: Role;
 

@@ -19,8 +19,7 @@ import IconButton from "@mui/joy/IconButton";
 import KeyboardBackspaceRoundedIcon from "@mui/icons-material/KeyboardBackspaceRounded";
 import logo from "../assets/SoftTeco.png";
 import logoDark from "../assets/SoftTeco_dark.png";
-import api from "../api"; // Import the axios instance
-
+import api from "../api";
 function ColorSchemeToggle(props) {
   const { onClick, ...other } = props;
   const { mode, setMode } = useColorScheme();
@@ -69,6 +68,8 @@ export default function SignIn() {
 
       const responseData = response.data;
       localStorage.setItem("role", responseData.role);
+      localStorage.setItem("userId", responseData.id);
+
       if (responseData.role === "manager") {
         setErrorMessage("Login successful!");
         navigate("/manager");

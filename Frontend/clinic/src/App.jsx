@@ -10,6 +10,7 @@ import SignUp from './components/SignUp';
 import RequireAuth from './components/RequireAuth';
 import NotFound from './components/NotFound';
 import HomePatient from './components/HomePatient';
+import MyProfile from './components/UserProfile';
 
 
 export default function App() {
@@ -22,6 +23,8 @@ export default function App() {
 
         <Route element={<RequireAuth allowedRoles={['manager']} />}>
         <Route path="/manager" element={<HomeManager />} />
+        <Route path="/manager/:id" element={<MyProfile />} />
+
         </Route>
         <Route element={<RequireAuth allowedRoles={['doctor']} />}>
         <Route path="/doctor" element={<HomeDoctor />} />

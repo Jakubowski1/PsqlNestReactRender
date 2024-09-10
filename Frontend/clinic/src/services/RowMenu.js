@@ -1,4 +1,4 @@
-import api from "../api"; // Import your axios instance
+import api from "../api";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
@@ -7,9 +7,11 @@ import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import IconButton from "@mui/joy/IconButton";
 import Divider from "@mui/joy/Divider";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function RowMenu({ id, onSuccess }) {
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   async function handleDelete() {
     try {
@@ -27,6 +29,10 @@ export default function RowMenu({ id, onSuccess }) {
     }
   }
 
+  function handleEdit() {
+    navigate(`/manager/${id}`);
+  }
+
   return (
     <Dropdown>
       <MenuButton
@@ -36,9 +42,7 @@ export default function RowMenu({ id, onSuccess }) {
         <MoreHorizRoundedIcon />
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Edit</MenuItem>
-
-        <Divider />
+        <MenuItem onClick={handleEdit}>Edit</MenuItem> <Divider />
         <MenuItem color="danger" onClick={handleDelete}>
           Delete
         </MenuItem>

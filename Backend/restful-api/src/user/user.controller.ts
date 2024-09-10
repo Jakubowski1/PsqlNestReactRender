@@ -80,6 +80,7 @@ export class UserController {
     if (updateUserDto.surname) existingUser.surname = updateUserDto.surname;
     if (updateUserDto.password) existingUser.password = updateUserDto.password;
     if (updateUserDto.role) existingUser.role = updateUserDto.role;
+    if (updateUserDto.email ) existingUser.email = updateUserDto.email;
     if (updateUserDto.isActive !== undefined) existingUser.isActive = updateUserDto.isActive;
     if (updateUserDto.specialty) existingUser.specialty = updateUserDto.specialty;
     return await this.userService.update(id, existingUser);

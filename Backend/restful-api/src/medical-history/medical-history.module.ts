@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MedicalHistoryService } from './medical-history.service';
 import { MedicalHistoryController } from './medical-history.controller';
 import { JwtService } from '@nestjs/jwt';
@@ -10,8 +10,7 @@ import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([MedicalHistory,Visit]), UserModule
-  ],
+  TypeOrmModule.forFeature([MedicalHistory,Visit]), forwardRef(() => UserModule), ],
   providers: [MedicalHistoryService,JwtService],
   controllers: [MedicalHistoryController],
   exports: [MedicalHistoryService]
