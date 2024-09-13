@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Box, Table, Checkbox, Chip, Typography, Sheet, Link } from "@mui/joy";
-import RowMenu from "../services/RowMenu";
+import { Box, Table, Chip, Typography, Link } from "@mui/joy";
+import RowMenu from "./RowMenu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
+import Card from "../wrappers/Card";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -21,19 +21,9 @@ function getComparator(order, orderBy) {
 
 export default function TableManager({ users }) {
   const [order, setOrder] = useState("desc");
-  const [selected, setSelected] = useState([]);
 
   return (
-    <Sheet
-      variant="soft"
-      sx={{
-        display: { sm: "block" },
-        width: "100%",
-        borderRadius: 20,
-        bgcolor: "background.paper",
-        overflow: "auto",
-      }}
-    >
+    <Card>
       <Table
         aria-labelledby="tableTitle"
         stickyHeader
@@ -48,27 +38,7 @@ export default function TableManager({ users }) {
       >
         <thead>
           <tr>
-            <th style={{ width: 48, textAlign: "center", padding: "12px 6px" }}>
-              <Checkbox
-                size="sm"
-                indeterminate={
-                  selected.length > 0 && selected.length !== users.length
-                }
-                checked={selected.length === users.length}
-                onChange={(event) => {
-                  setSelected(
-                    event.target.checked ? users.map((user) => user.id) : []
-                  );
-                }}
-                color={
-                  selected.length > 0 || selected.length === users.length
-                    ? "primary"
-                    : undefined
-                }
-                sx={{ verticalAlign: "text-bottom" }}
-              />
-            </th>
-            <th style={{ width: 120, padding: "12px 6px" }}>
+            <th style={{ width: 50, padding: "12px 6px" }}>
               <Link
                 underline="none"
                 color="primary"
@@ -92,31 +62,16 @@ export default function TableManager({ users }) {
                 User ID
               </Link>
             </th>
-            <th style={{ width: 240, padding: "12px 6px" }}>Name</th>
-            <th style={{ width: 240, padding: "12px 6px" }}>Email</th>
+            <th style={{ width: 140, padding: "12px 6px" }}>Name</th>
+            <th style={{ width: 140, padding: "12px 6px" }}>Email</th>
             <th style={{ width: 140, padding: "12px 6px" }}>Role</th>
-            <th style={{ width: 140, padding: "12px 6px" }}>Status</th>
-            <th style={{ width: 140, padding: "12px 6px" }}></th>
+            <th style={{ width: 40, padding: "12px 6px" }}>Status</th>
+            <th style={{ width: 40, padding: "12px 6px" }}></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ textAlign: "left" }}>
           {users.sort(getComparator(order, "id")).map((user) => (
             <tr key={user.id}>
-              <td style={{ textAlign: "center", width: 120 }}>
-                <Checkbox
-                  size="sm"
-                  checked={selected.includes(user.id)}
-                  color={selected.includes(user.id) ? "primary" : undefined}
-                  onChange={(event) => {
-                    setSelected((ids) =>
-                      event.target.checked
-                        ? ids.concat(user.id)
-                        : ids.filter((itemId) => itemId !== user.id)
-                    );
-                  }}
-                  sx={{ verticalAlign: "text-bottom" }}
-                />
-              </td>
               <td>
                 <Typography level="body-xs">{user.id}</Typography>
               </td>
@@ -147,6 +102,6 @@ export default function TableManager({ users }) {
           ))}
         </tbody>
       </Table>
-    </Sheet>
+    </Card>
   );
 }

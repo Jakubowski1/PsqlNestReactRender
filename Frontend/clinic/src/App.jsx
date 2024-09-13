@@ -1,16 +1,15 @@
 
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomeDoctor from './components/HomeDoctor';
-import HomeManager from './components/HomeManager';
-//import HomePatient from './components/HomePatient';
-import LandingPage from './components/LandingPage';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
-import RequireAuth from './components/RequireAuth';
-import NotFound from './components/NotFound';
-import HomePatient from './components/HomePatient';
-import MyProfile from './components/UserProfile';
+import HomeDoctor from './pages/HomeDoctor';
+import HomeManager from './pages/HomeManager';
+import LandingPage from './pages/LandingPage';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import RequireAuth from './services/requireAuth';
+import NotFound from './pages/NotFound';
+import HomePatient from './pages/HomePatient';
+import UserProfilePage from './pages/UserProfilePage';
 
 
 export default function App() {
@@ -23,7 +22,7 @@ export default function App() {
 
         <Route element={<RequireAuth allowedRoles={['manager']} />}>
         <Route path="/manager" element={<HomeManager />} />
-        <Route path="/manager/:id" element={<MyProfile />} />
+        <Route path="/manager/:id" element={<UserProfilePage />} />
 
         </Route>
         <Route element={<RequireAuth allowedRoles={['doctor']} />}>
@@ -37,5 +36,3 @@ export default function App() {
   );
 }
 
-//NEXT step is to create a home page for patient or crud for manager
-//I think the second one is more useful

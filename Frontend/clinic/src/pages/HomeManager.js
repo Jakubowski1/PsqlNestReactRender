@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, Alert } from "@mui/joy";
-import ResponsiveAppBar from "./AppBarManager";
-import TableManager from "./TableManager";
-import ManageUsers from "./ManageUsers"; // Import the new component
-import Filters from "./Filters"; // Import the Filters component
+import ResponsiveAppBar from "../components/organisms/NavigationManager";
+import TableManager from "../components/organisms/TableManager";
+import ManageUsers from "../components/molecules/ManageUsers";
+import Filters from "../components/molecules/Filters";
 import api from "../api";
+import Card from "../components/wrappers/Card";
+import MovingGradientBackground from "../components/wrappers/MovingGradientBackground";
 
 export default function HomeManager() {
   const [users, setUsers] = useState([]);
@@ -12,16 +14,15 @@ export default function HomeManager() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // State for filters
-  const [statusFilter, setStatusFilter] = useState("all"); // Default to 'all'
-  const [roleFilter, setRoleFilter] = useState("all"); // Default to 'all'
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [roleFilter, setRoleFilter] = useState("all");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await api.get("/users");
         setUsers(response.data);
-        setFilteredUsers(response.data); // Initialize filteredUsers with all users
+        setFilteredUsers(response.data);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -35,14 +36,12 @@ export default function HomeManager() {
   const applyFilters = () => {
     let updatedUsers = [...users];
 
-    // Filter by status (skip filtering if 'all' is selected)
     if (statusFilter && statusFilter !== "all") {
       updatedUsers = updatedUsers.filter((user) =>
         statusFilter === "active" ? user.isActive : !user.isActive
       );
     }
 
-    // Filter by role (skip filtering if 'all' is selected)
     if (roleFilter && roleFilter !== "all") {
       updatedUsers = updatedUsers.filter((user) => user.role === roleFilter);
     }
@@ -81,31 +80,31 @@ export default function HomeManager() {
   }
 
   return (
-    <Fragment>
+    <MovingGradientBackground>
       <ResponsiveAppBar />
-      <Box sx={{ padding: 3 }}>
-        <Box
-          sx={{
-            justifyContent: "space-between",
-            paddingX: 4,
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
-          <ManageUsers users={users} setUsers={setUsers} />
+      <Box sx={{ mx: 3, paddingTop: "30px" }}>
+        <Card>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <ManageUsers users={users} setUsers={setUsers} />
+            <Filters
+              statusFilter={statusFilter}
+              roleFilter={roleFilter}
+              setStatusFilter={setStatusFilter}
+              setRoleFilter={setRoleFilter}
+              applyFilters={applyFilters}
+            />
+          </Box>
+        </Card>
 
-          {/* Filters */}
-          <Filters
-            statusFilter={statusFilter}
-            roleFilter={roleFilter}
-            setStatusFilter={setStatusFilter}
-            setRoleFilter={setRoleFilter}
-            applyFilters={applyFilters}
-          />
-        </Box>
-        {/* Table of users */}
         <TableManager users={filteredUsers} />
       </Box>
-    </Fragment>
+    </MovingGradientBackground>
   );
 }

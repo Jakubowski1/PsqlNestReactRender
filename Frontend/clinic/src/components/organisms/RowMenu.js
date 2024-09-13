@@ -1,4 +1,4 @@
-import api from "../api";
+import api from "../../api";
 import Menu from "@mui/joy/Menu";
 import MenuButton from "@mui/joy/MenuButton";
 import MenuItem from "@mui/joy/MenuItem";
