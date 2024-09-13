@@ -8,7 +8,9 @@ import ProfileStatusEmail from "../atoms/ProfileStatusEmail";
 import ProfileSpecialty from "../atoms/ProfileSpecialty";
 import ProfileActions from "../atoms/ProfileActions";
 import Card from "../wrappers/Card";
-
+import ProfileSurnameInput from "../atoms/ProfileSurnameInput";
+import ProfileAge from "../atoms/ProfileAge";
+import ProfilePassword from "../atoms/ProfilePassword";
 export default function MyProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ export default function MyProfile() {
           email: userData.email,
           password: userData.password,
           role: userData.role,
+          age: userData.age,
           isActive: userData.isActive,
           specialty: userData.role === "doctor" ? userData.specialty : "",
         };
@@ -51,7 +54,6 @@ export default function MyProfile() {
   const handleSave = async () => {
     try {
       await api.put(`/users/${id}`, profile);
-      alert("Profile updated successfully");
       navigate(-1);
     } catch (error) {
       setError("Error updating profile");
@@ -98,7 +100,9 @@ export default function MyProfile() {
       >
         <Card>
           <Box sx={{ margin: "1vh auto", mb: 1 }}>
-            <Typography level="title-md">My Profile</Typography>
+            <Typography level="title-md">
+              {profile.surname}'s profile
+            </Typography>
           </Box>
           <Divider />
 
@@ -109,7 +113,23 @@ export default function MyProfile() {
           >
             <ProfileImage />
             <Stack spacing={6} sx={{ flexGrow: 1 }}>
-              <ProfileNameInput profile={profile} handleChange={handleChange} />
+              <Stack direction="row" spacing={2}>
+                <ProfileNameInput
+                  profile={profile}
+                  handleChange={handleChange}
+                />
+                <ProfileSurnameInput
+                  profile={profile}
+                  handleChange={handleChange}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                {/* <ProfilePassword
+                  profile={profile}
+                  handleChange={handleChange}
+                />
+                <ProfileAge profile={profile} handleChange={handleChange} /> */}
+              </Stack>
               <ProfileStatusEmail
                 profile={profile}
                 handleChange={handleChange}

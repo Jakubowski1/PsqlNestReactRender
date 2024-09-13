@@ -19,11 +19,11 @@ export class UserService {
   async findOne(id: number): Promise<User> {
     return await this.usersRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.appointments', 'appointments') // Join appointments relation
-      .leftJoinAndSelect('user.medicalHistory', 'medicalHistory') // Join medicalHistory relation
-      .leftJoinAndSelect('user.schedule', 'schedule') // Join schedule relation
-      .where('user.id = :id', { id }) // Filter by user id
-      .getOne(); // Get the user along with related entities
+      .leftJoinAndSelect('user.appointments', 'appointments') 
+      .leftJoinAndSelect('user.medicalHistory', 'medicalHistory') 
+      .leftJoinAndSelect('user.schedule', 'schedule') 
+      .where('user.id = :id', { id }) 
+      .getOne(); 
   }
   
 
@@ -44,21 +44,21 @@ export class UserService {
   }
 
   async update(id: number, user: Partial<User>): Promise<User> {
-    // Find the existing user by ID
+    
     const existingUser = await this.findOne(id);
   
    
   
-    // Check if password is being updated, and hash the new password
+    
     if (user.password) {
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(user.password, salt);
     }
   
-    // Merge the updates into the existing user entity
+    
     const updatedUser = this.usersRepository.merge(existingUser, user);
   
-    // Save the updated user (this will also handle cascading updates)
+    
     return await this.usersRepository.save(updatedUser);
   }
   

@@ -19,7 +19,7 @@ export class UserController {
   ) {}
 
   @Get()
-  //@Roles(Role.Manager, Role.Patient)
+  
   @ApiOperation({ summary: 'Get all users' })
   async findAll(): Promise<UserEntity[]> {
     return await this.userService.findAll();
@@ -51,13 +51,13 @@ export class UserController {
     newUser.email = createUserDto.email;
     newUser.password = createUserDto.password;
     newUser.role = createUserDto.role;
-    // Handle optional fields based on the role
+    
     if (newUser.role === Role.Patient) {
       newUser.isActive = createUserDto.isActive || false;
     } else if (newUser.role === Role.Doctor) {
       newUser.specialty = createUserDto.specialty;
     } else if (newUser.role === Role.Manager) {
-      // Handle manager-specific fields
+      
     }
     return await this.userService.create(newUser);
   }
@@ -75,7 +75,7 @@ export class UserController {
     if (!existingUser) {
       throw new UserNotFoundException(id);
     }
-    // Update fields based on DTO
+    
     if (updateUserDto.name) existingUser.name = updateUserDto.name;
     if (updateUserDto.surname) existingUser.surname = updateUserDto.surname;
     if (updateUserDto.password) existingUser.password = updateUserDto.password;

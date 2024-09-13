@@ -1,18 +1,19 @@
 import React, { Fragment } from "react";
 import { Stack, FormControl, Input, FormLabel } from "@mui/joy";
 
-export default function ProfileNameInput({ profile, handleChange }) {
+export default function ProfilePassword({ profile, handleChange }) {
   return (
     <Fragment>
       <FormControl sx={{ flexGrow: 1 }}>
-        <FormLabel>Name</FormLabel>
+        <FormLabel sx={{ color: "#FE5050" }}>Reset password</FormLabel>
 
         <Input
+          color="danger"
           size="sm"
-          name="name"
-          value={profile.name}
+          name="password"
+          value=""
           onChange={handleChange}
-          placeholder="First name"
+          placeholder="New password"
         />
       </FormControl>
     </Fragment>

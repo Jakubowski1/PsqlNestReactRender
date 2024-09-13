@@ -23,23 +23,23 @@ import { VisitModule } from './visit/visit.module';
 
 @Module({
   imports: [
-    // Load environment variables globally
+    
     ConfigModule.forRoot({
       isGlobal: true,
     }),
   
-    // Configure TypeORM to use DATABASE_URL from environment variables
+    
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: process.env.DATABASE_URL, // Use DATABASE_URL from environment variables
-        entities: [Schedule, User,Appointment,MedicalHistory,Visit], // Adjust entity path according to your structure
-        migrations: [__dirname + '/migrations/**/*.ts'], // Adjust migrations path if necessary
-        synchronize: true, // Recommended to disable in production
+        url: process.env.DATABASE_URL, 
+        entities: [Schedule, User,Appointment,MedicalHistory,Visit], 
+        migrations: [__dirname + '/migrations/**/*.ts'], 
+        synchronize: true, 
         ssl: {
           rejectUnauthorized: false,
-        }, // Optional: for SSL configuration, depending on your database setup
+        }, 
       }),
       inject: [ConfigService],
     }),

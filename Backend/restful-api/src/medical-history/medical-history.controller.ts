@@ -13,14 +13,14 @@ import { Appointment } from 'src/appointment/appointment.entity';
 export class MedicalHistoryController {
   constructor(
     private readonly medicalHistoryService: MedicalHistoryService,
-    private readonly userService: UserService, // Inject UserService to fetch User entities
+    private readonly userService: UserService, 
   ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new medical history for a patient' })
   @ApiResponse({ status: 201, description: 'Medical history created successfully', type: MedicalHistoryDto })
   async createMedicalHistory(@Body() createMedicalHistoryDto: CreateMedicalHistoryDto): Promise<MedicalHistoryDto> {
-    const user = await this.userService.findOne(createMedicalHistoryDto.userId); // Fetch User by userId
+    const user = await this.userService.findOne(createMedicalHistoryDto.userId); 
     const medicalHistory = await this.medicalHistoryService.createMedicalHistory(user);
 
     return {

@@ -11,6 +11,6 @@ import { UserModule } from 'src/user/user.module';
   ],
   providers: [VisitService],
   controllers: [VisitController],
-  exports: [VisitService], // Export the service if needed in other modules
+  exports: [VisitService], 
 })
 export class VisitModule {}

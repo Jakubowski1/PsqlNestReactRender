@@ -18,16 +18,16 @@ export class AppointmentController {
   async createAppointment(@Body() createAppointmentDto: CreateAppointmentDto): Promise<Appointment> {
     const { doctorId, userId, appointmentTime } = createAppointmentDto;
 
-    // Fetch the doctor and user from the database to check their roles
+    
     const doctor = await this.appointmentService.getUserById(doctorId);
     const user = await this.appointmentService.getUserById(userId);
 
-    // Enforce doctor role
+    
     if (doctor.role !== Role.Doctor) {
       throw new NotFoundException(`User with ID ${doctorId} is not a doctor`);
     }
 
-    // Enforce patient role
+    
     if (user.role !== Role.Patient) {
       throw new NotFoundException(`User with ID ${userId} is not a patient`);
     }

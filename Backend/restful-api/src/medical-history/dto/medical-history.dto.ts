@@ -10,5 +10,5 @@ export class MedicalHistoryDto {
   user: User;
 
   @ApiProperty({ type: () => [Visit], description: 'Collection of visits associated with this medical history' })
-  visits: Partial<Visit>[]; // Partial to omit circular reference
+  visits: Partial<Visit>[]; 
 }

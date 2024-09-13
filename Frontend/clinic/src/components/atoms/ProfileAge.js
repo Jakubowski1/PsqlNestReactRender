@@ -1,18 +1,18 @@
 import React, { Fragment } from "react";
 import { Stack, FormControl, Input, FormLabel } from "@mui/joy";
 
-export default function ProfileNameInput({ profile, handleChange }) {
+export default function ProfileAge({ profile, handleChange }) {
   return (
     <Fragment>
       <FormControl sx={{ flexGrow: 1 }}>
-        <FormLabel>Name</FormLabel>
+        <FormLabel>User's age</FormLabel>
 
         <Input
           size="sm"
-          name="name"
-          value={profile.name}
+          name="age"
+          value={profile.age}
           onChange={handleChange}
-          placeholder="First name"
+          placeholder="Age"
         />
       </FormControl>
     </Fragment>

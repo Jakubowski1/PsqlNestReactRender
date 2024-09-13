@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Table, Chip, Typography, Link } from "@mui/joy";
 import RowMenu from "./RowMenu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Card from "../wrappers/Card";
+import api from "../../api"; // Import your API client
+
+// Sorting logic
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+  if (b[orderBy] < a[orderBy]) return -1;
+  if (b[orderBy] > a[orderBy]) return 1;
   return 0;
 }
 
@@ -19,8 +18,38 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export default function TableManager({ users }) {
+export default function TableManager() {
+  const [users, setUsers] = useState([]);
   const [order, setOrder] = useState("desc");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch users from the API
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.get("/users"); // Fetch users from API
+      setUsers(response.data); // Set users to state
+      setLoading(false);
+    } catch (error) {
+      setError("Error fetching users");
+      setLoading(false);
+    }
+  };
+
+  // useEffect to fetch users when the component mounts
+  useEffect(() => {
+    fetchUsers(); // Fetch users on mount
+  }, []);
+
+  // Handle success delete
+  const handleDeleteSuccess = () => {
+    fetchUsers(); // Re-fetch users after deletion
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <Card>
@@ -54,9 +83,6 @@ export default function TableManager({ users }) {
                         order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
                     },
                   },
-                  order === "desc"
-                    ? { "& svg": { transform: "rotate(0deg)" } }
-                    : { "& svg": { transform: "rotate(180deg)" } },
                 ]}
               >
                 User ID
@@ -95,7 +121,11 @@ export default function TableManager({ users }) {
               </td>
               <td>
                 <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-                  <RowMenu id={user.id} />
+                  {/* Pass the handleDeleteSuccess callback to RowMenu */}
+                  <RowMenu
+                    id={user.id}
+                    onSuccess={handleDeleteSuccess} // Re-fetch users on delete
+                  />
                 </Box>
               </td>
             </tr>

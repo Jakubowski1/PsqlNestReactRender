@@ -25,7 +25,7 @@ import { User } from 'src/user/user.entity';
       }),
     }),
     ConfigModule,
-    forwardRef(() => UserModule), // Using forwardRef to handle potential circular dependencies
+    forwardRef(() => UserModule), 
   ],
   providers: [
     AuthService,

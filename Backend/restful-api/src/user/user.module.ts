@@ -13,10 +13,10 @@ import { ScheduleModule } from 'src/schedule/schedule.module';
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => AuthModule),  
-    forwardRef(() => AppointmentModule),     // Resolve circular dependency with MedicalHistoryModule
+    forwardRef(() => AppointmentModule),     
                
     forwardRef(() => MedicalHistoryModule),     
-    forwardRef(() => ScheduleModule),     // Resolve circular dependency with MedicalHistoryModule
+    forwardRef(() => ScheduleModule),     
     
   ],
   providers: [UserService, JwtService],

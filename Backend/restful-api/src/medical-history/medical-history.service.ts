@@ -41,12 +41,12 @@ export class MedicalHistoryService {
       throw new NotFoundException(`Medical history for user with ID ${userId} not found`);
     }
 
-    // Manually remove circular references
+    
     const serializedHistory = {
       ...medicalHistory,
       visits: medicalHistory.visits.map(visit => ({
         ...visit,
-        medicalHistory: undefined, // Remove circular reference
+        medicalHistory: undefined, 
       })),
     };
 

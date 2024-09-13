@@ -69,6 +69,7 @@ function ResponsiveAppBar() {
         throw new Error(`Logout failed with status: ${response.status}`);
       }
 
+      const data = await response.json();
       navigate("/");
       setLogoutMessage("Logout successful!");
     } catch (error) {

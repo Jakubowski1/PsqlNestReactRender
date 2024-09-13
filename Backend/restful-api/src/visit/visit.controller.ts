@@ -15,7 +15,7 @@ export class VisitController {
   @ApiResponse({ status: 201, description: 'Visit created successfully', type: Visit })
   async createVisit(@Body() createVisitDto: CreateVisitDto): Promise<Visit> {
     const { appointmentId, description } = createVisitDto;
-    const appointment = { id: appointmentId } as Appointment; // Creating a partial Appointment object with just the ID
+    const appointment = { id: appointmentId } as Appointment; 
     return await this.visitService.createVisit(appointment, description);
   }
 

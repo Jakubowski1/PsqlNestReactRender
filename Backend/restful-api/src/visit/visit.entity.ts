@@ -15,7 +15,7 @@ export class Visit {
   appointment: Appointment;
 
   @ManyToOne(() => MedicalHistory, (medicalHistory) => medicalHistory.visits)
-  @Exclude() // Exclude to break the circular reference
+  @Exclude() 
   @ApiProperty({ type: () => MedicalHistory, description: 'The medical history associated with this visit' })
   medicalHistory: MedicalHistory;
 

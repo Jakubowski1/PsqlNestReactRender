@@ -9,7 +9,7 @@ import { Schedule } from '../schedule/schedule.entity';
 @Entity()
 export class User {
 
-  //Shared for all users
+  
 
   @PrimaryGeneratedColumn()
   @ApiProperty({ description: 'Unique identifier for the user' })
@@ -50,7 +50,7 @@ export class User {
   @ApiProperty({ type: () => [Appointment], description: 'List of appointments associated with the user', nullable: true })
   appointments?: Appointment[];
   
-  //Patient's stuff below
+  
 
   @Column({ default: false, nullable: true })
   @ApiProperty({ description: 'Indicates whether the patient is active', required: false })

@@ -1,5 +1,4 @@
-import { DataSource } from 'typeorm';
-import { AppDataSource } from './data-source'; // Adjust path if necessary
+import { AppDataSource } from './data-source'; 
 
 AppDataSource.initialize()
   .then(async () => {
