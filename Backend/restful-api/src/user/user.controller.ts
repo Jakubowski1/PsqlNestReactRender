@@ -26,7 +26,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @Roles(Role.Manager, Role.Patient)
+  @Roles(Role.Librarian, Role.User)
 
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiParam({ name: 'id', type: 'number' })
@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Post()
-  @Roles(Role.Manager, Role.Patient)
+  @Roles(Role.Librarian, Role.User)
 
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
@@ -52,18 +52,12 @@ export class UserController {
     newUser.password = createUserDto.password;
     newUser.role = createUserDto.role;
     
-    if (newUser.role === Role.Patient) {
-      newUser.isActive = createUserDto.isActive || false;
-    } else if (newUser.role === Role.Doctor) {
-      newUser.specialty = createUserDto.specialty;
-    } else if (newUser.role === Role.Manager) {
-      
-    }
+   
     return await this.userService.create(newUser);
   }
 
   @Put(':id')
-  @Roles(Role.Manager, Role.Patient)
+  @Roles(Role.Librarian, Role.User)
   @ApiOperation({ summary: 'Update a user' })
   @ApiParam({ name: 'id', type: 'number' })
   @ApiBody({ type: UpdateUserDto })
@@ -81,13 +75,12 @@ export class UserController {
     if (updateUserDto.password) existingUser.password = updateUserDto.password;
     if (updateUserDto.role) existingUser.role = updateUserDto.role;
     if (updateUserDto.email ) existingUser.email = updateUserDto.email;
-    if (updateUserDto.isActive !== undefined) existingUser.isActive = updateUserDto.isActive;
-    if (updateUserDto.specialty) existingUser.specialty = updateUserDto.specialty;
+
     return await this.userService.update(id, existingUser);
   }
 
   @Delete(':id')
-  @Roles(Role.Manager, Role.Patient)
+  @Roles(Role.Librarian, Role.User)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiParam({ name: 'id', type: 'number' })
   async delete(@Param('id') id: number): Promise<void> {

@@ -5,8 +5,7 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '../user/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { Role } from '../constants/roles.enum';
-import { MedicalHistory } from 'src/medical-history/medical-history.entity';
-import { Specialty } from 'src/constants/specialties.enum';
+
 
 @Injectable()
 export class AuthService {
@@ -61,11 +60,8 @@ export class AuthService {
     user.surname = registerDto.surname;
     user.email = registerDto.email;
                     
-    // Hash the password before assigning it
     user.password = registerDto.password;
-
-    user.role = Role.Patient;  // Assign role as Patient
-    user.isActive = false;     // Set isActive to false
+    user.role = Role.User;  // Assign role as User
  
     return await this.usersService.create(user); // Assuming create handles saving the user
 }

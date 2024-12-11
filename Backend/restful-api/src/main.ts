@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   const config = new DocumentBuilder()
-    .setTitle('API')
+    .setTitle('Natlia API')
     .setDescription('no words that can describe it')
     .setVersion('1.0')
     .build();

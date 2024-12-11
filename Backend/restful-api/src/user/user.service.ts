@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcryptjs';
-import { UserNotFoundException } from '../exceptions/custom-exceptions';
 
 @Injectable()
 export class UserService {
@@ -47,15 +46,11 @@ export class UserService {
     
     const existingUser = await this.findOne(id);
   
-   
-  
-    
     if (user.password) {
       const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(user.password, salt);
     }
   
-    
     const updatedUser = this.usersRepository.merge(existingUser, user);
   
     
