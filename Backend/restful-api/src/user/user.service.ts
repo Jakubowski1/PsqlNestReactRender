@@ -12,15 +12,13 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    return await this.usersRepository.find({ relations: ['appointments', 'medicalHistory', 'schedule'] });
+    return await this.usersRepository.find({ relations: [] });
   }
 
   async findOne(id: number): Promise<User> {
     return await this.usersRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.appointments', 'appointments') 
-      .leftJoinAndSelect('user.medicalHistory', 'medicalHistory') 
-      .leftJoinAndSelect('user.schedule', 'schedule') 
+
       .where('user.id = :id', { id }) 
       .getOne(); 
   }

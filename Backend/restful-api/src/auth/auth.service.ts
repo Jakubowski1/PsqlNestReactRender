@@ -61,9 +61,9 @@ export class AuthService {
     user.email = registerDto.email;
                     
     user.password = registerDto.password;
-    user.role = Role.User;  // Assign role as User
+    user.role = Role.User;  
  
-    return await this.usersService.create(user); // Assuming create handles saving the user
+    return await this.usersService.create(user); 
 }
 
 }

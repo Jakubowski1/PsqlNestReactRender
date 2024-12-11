@@ -14,29 +14,32 @@ import { User } from 'src/user/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User]), // User entity for authentication
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+        secret: configService.get<string>('JWT_SECRET'), // Ensure this is in your .env file
         signOptions: { expiresIn: '1h' },
       }),
     }),
-    ConfigModule,
-    forwardRef(() => UserModule), 
+    ConfigModule, // Global configuration
+    forwardRef(() => UserModule), // ForwardRef to avoid circular dependency
   ],
   providers: [
     AuthService,
     LocalStrategy,
     JwtStrategy,
     {
-      provide: APP_GUARD,
+      provide: APP_GUARD, // Make RolesGuard a global guard
       useClass: RolesGuard,
     },
   ],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [
+    AuthService,
+    JwtModule, // Export JwtModule to make JwtService available in other modules
+  ],
 })
 export class AuthModule {}

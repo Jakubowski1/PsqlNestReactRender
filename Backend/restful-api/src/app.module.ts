@@ -8,6 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as cookieParser from 'cookie-parser';
 import JwtCookieMiddleware from './auth/jwt-cookie.middleware';
 import { User } from './user/user.entity';
+import { BookController } from './book/book.controller';
+import { BookService } from './book/book.service';
+import { BookModule } from './book/book.module';
+import { ScheduleModule } from '@nestjs/schedule';
+
 
 @Module({
   imports: [
@@ -32,11 +37,11 @@ import { User } from './user/user.entity';
       inject: [ConfigService],
     }),
 
-    AuthModule, UserModule
+    AuthModule, UserModule, BookModule, ScheduleModule.forRoot(),
 
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, BookController],
+  providers: [AppService, BookService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
