@@ -10,36 +10,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true); // To handle loading state
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await fetch('https://psqlnestreactrender.onrender.com/auth/me', {
-          method: 'GET',
-          credentials: 'include', // Include cookies
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        } else {
-          setUser(null);
-        }
-      } catch (err) {
-        console.error('Auth Fetch Error:', err);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
+  
   // Optional: Function to refresh user data
   const refreshUser = async () => {
     setLoading(true);
     try {
-      const res = await fetch('https://psqlnestreactrender.onrender.com/api', {
+      const res = await fetch('https://psqlnestreactrender.onrender.com', {
         method: 'GET',
         credentials: 'include',
       });

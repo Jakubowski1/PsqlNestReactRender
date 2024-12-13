@@ -10,8 +10,7 @@ export default function DashboardPage() {
     <ProtectedRoute>
       <div className="container">
         <h1>Dashboard</h1>
-        <p>Welcome, {user.name}!</p>
-        <p>Your role: {user.role}</p>
+     
       </div>
     </ProtectedRoute>
   );

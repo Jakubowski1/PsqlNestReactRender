@@ -10,7 +10,7 @@ export default function AdminPage() {
     <ProtectedRoute requiredRole="librarian">
       <div className="container">
         <h1>Admin Panel</h1>
-        <p>Welcome, {user.name}! You have admin access.</p>
+        <p>Welcome! You have admin access.</p>
         {/* Admin functionalities go here */}
       </div>
     </ProtectedRoute>
