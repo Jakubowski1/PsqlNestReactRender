@@ -10,7 +10,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": "npm run typeorm -- migration:run -d ./src/data-source.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node node_modules/@nestjs/cli/bin/nest.js start",
+    "start": "node ./node_modules/@nestjs/cli/bin/nest.js start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
