@@ -15,7 +15,6 @@ import {
   
   @ApiTags('books')
   @ApiBearerAuth()
-  @UseGuards(RolesGuard)
   @Controller('books')
   export class BookController {
     constructor(private readonly bookService: BookService) {}
@@ -39,7 +38,7 @@ import {
       },
     })
     createBook(@Body() createBookDto: CreateBookDto) {
-      return this.bookService.createBook(createBookDto, 'Librarian');
+      return this.bookService.createBook(createBookDto);
     }
   
     @Get()
@@ -77,12 +76,12 @@ import {
       @Param('id') id: string,
       @Body() updateBookDto: UpdateBookDto,
     ) {
-      return this.bookService.updateBook(id, updateBookDto, 'Librarian');
+      return this.bookService.updateBook(id, updateBookDto);
     }
   
     @Delete(':id')
     deleteBook(@Param('id') id: string) {
-      return this.bookService.deleteBook(id, 'Librarian');
+      return this.bookService.deleteBook(id);
     }
   
     @Post(':id/reserve')

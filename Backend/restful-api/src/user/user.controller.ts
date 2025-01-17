@@ -12,7 +12,6 @@ import { Role } from 'src/constants/roles.enum';
 @ApiTags('users')
 @Controller('users')
 @ApiBearerAuth()
-@UseGuards(RolesGuard)
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -26,7 +25,6 @@ export class UserController {
   }
 
   @Get(':id')
-  @Roles(Role.Librarian, Role.User)
 
   @ApiOperation({ summary: 'Get a user by ID' })
   @ApiParam({ name: 'id', type: 'number' })
@@ -39,7 +37,6 @@ export class UserController {
   }
 
   @Post()
-  @Roles(Role.Librarian, Role.User)
 
   @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
@@ -57,7 +54,6 @@ export class UserController {
   }
 
   @Put(':id')
-  @Roles(Role.Librarian, Role.User)
   @ApiOperation({ summary: 'Update a user' })
   @ApiParam({ name: 'id', type: 'number' })
   @ApiBody({ type: UpdateUserDto })
@@ -80,7 +76,6 @@ export class UserController {
   }
 
   @Delete(':id')
-  @Roles(Role.Librarian, Role.User)
   @ApiOperation({ summary: 'Delete a user' })
   @ApiParam({ name: 'id', type: 'number' })
   async delete(@Param('id') id: number): Promise<void> {

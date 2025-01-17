@@ -8,6 +8,7 @@ import {
   import { CreateBookDto, UpdateBookDto } from './dto/book.dto';
   import { Cron, CronExpression } from '@nestjs/schedule';
   
+  
   @Injectable()
   export class BookService {
     private readonly logger = new Logger(BookService.name);
@@ -19,23 +20,20 @@ import {
       }
     }
   
-    createBook(createBookDto: CreateBookDto, role: string) {
-      this.checkLibrarianRole(role);
+    createBook(createBookDto: CreateBookDto) {
       const newBook = { ...createBookDto, isReserved: false, isRented: false, reservedUntil: null, rentedUntil: null };
       this.books.push(newBook);
       return { message: 'Book created successfully', book: newBook };
     }
   
-    updateBook(id: string, updateBookDto: UpdateBookDto, role: string) {
-      this.checkLibrarianRole(role);
+    updateBook(id: string, updateBookDto: UpdateBookDto) {
       const book = this.findBookById(id);
   
       Object.assign(book, updateBookDto);
       return { message: `Book with ID ${id} updated successfully`, book };
     }
   
-    deleteBook(id: string, role: string) {
-      this.checkLibrarianRole(role);
+    deleteBook(id: string) {
       const bookIndex = this.books.findIndex((book) => book.id === id);
   
       if (bookIndex === -1) {

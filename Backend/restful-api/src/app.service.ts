@@ -6,20 +6,18 @@ import { UserService } from './user/user.service';
 import { Role } from './constants/roles.enum';
 @Injectable()
 export class AppService  {
-  // constructor(
+  constructor(
 
-  //   private readonly userService: UserService,
-  // ) {} 
+    private readonly userService: UserService,
+  ) {} 
   //  async onModuleInit() {
   //   const user = new User();
-  //   user.surname = 'user';
-  //   user.email = "user100";
-  //   user.name = 'user';
-  //   user.password = 'user'; 
-  //   user.age = '10';
-   
+  //   user.email = "admin";
+  //   user.password = 'admin'; 
+  //   user.role = Role.Librarian;
+  //   user.name = 'admin';
+  //   user.surname = 'admin';
   //   const createdUser = await this.userService.create(user);
-
   // }
   getHello(): string {
     return 'Hello World!';
